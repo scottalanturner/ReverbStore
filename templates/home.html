@@ -9,7 +9,36 @@ Welcome to Reverb Store!
 {% endblock %}
 
 {% block content %}
-<p>This is the home page of Reverb Store. Check out our latest products!2</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="container">
+                    <div class="row">
+                        {% for record in records %}
+                            <div class="col-md-4 d-flex align-items-stretch">
+                                <div class="card mb-4">
+                                    <img class="card-img-top" src="{{ url_for('static', filename='images/' + record.image_url ) }}" alt="{{ record.instrument_name }}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ record.instrument_name }}</h5>
+                                        <p class="card-text">{{ record.description }}</p>
+                                        <p class="card-text"><small class="text-muted">{{ record.brand }} {{ record.model }}</small></p>
+                                        <p class="card-text"><strong>${{ record.price }}</strong></p>
+                                        <p class="card-text">Sold by: {{ record.store_name }}</p>
+                                        <a href="/instrument/{{ record.instrument_id }}" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if loop.index is divisibleby 3 %}
+                                </div><div class="row">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
 {% endblock %}
 
 {% block footer %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+    <h1 class="my-4">Checkout</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Order Details</h2>
+        </div>
+        <div class="card-body">
+        <img style="height:150px;" src="{{ url_for('static', filename='images/' + instrument.image_url) }}" class="img-fluid" alt="{{ instrument.instrument_name }}">
+                        
+            <h5 class="card-title">{{ instrument.name }}</h5>
+            <p class="card-text">{{ instrument.description }}</p>
+            <p class="card-text">Shipping: ${{ instrument.shipping_type }}</p>
+            <p class="card-text">Price: ${{ instrument.price }}</p>
+        </div>
+    </div>
+
+    {% if form.errors %}
+    <div>{{ form.errors }}</div>
+    {% endif %}
+
+    <form method="post">
+        <h2>Billing &amp; Payment</h2>
+        {{ form.hidden_tag() }}
+    
+        {% for field in form if field.type != 'CSRFTokenField' %}
+        <div class="form-group row m-3">
+            <div class="col-sm-4 text-nowrap">
+                {{ field.label(class="col-form-label") }}
+            </div>
+            <div class="col-sm-8">
+                {{ field(class="form-control") }}
+                {% if field.errors %}
+                    <div class="invalid-feedback">
+                        {{ field.errors[0] }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+     
+        <button type="submit" class="btn btn-primary">Order</button>
+    </form>
+</div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Order Confirmation</h1>
+                <p>Thank you for your order! Your order has been received and is now being processed. Your order details are below:</p>
+
+                <!-- You can display order details here. For example: -->
+                <h2>Order Details</h2>
+                <p>Order Number: {{ receipt['order_id'] }}</p>
+                <p>Total Price: {{ receipt['total_price'] }}</p>
+
+                <!-- You can also list the items in the order. For example: -->
+                <h2>Items in Your Order</h2>
+                {{ receipt['instrument_name'] }} - ${{ receipt['instrument_price'] }}
+
+                <p>We will send you an email confirmation shortly when your order ships.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
