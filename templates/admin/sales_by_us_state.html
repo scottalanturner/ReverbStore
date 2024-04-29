@@ -1,0 +1,22 @@
+<h2>Sales By US State</h2>
+
+{% include 'admin/template_sql_accordion.html' %}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">State</th>
+        <th scope="col">Total Sales</th>
+        <th scope="col">Sales Rank</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in data %}
+      <tr>
+        <td>{{ row.state }}</td>
+        <td>{{ row.total_sales }}</td>
+        <td>{{ row.sales_rank }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>

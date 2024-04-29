@@ -1,11 +1,11 @@
 
---Transaction to Create a new purchase
+
+-- Transaction to Create a new purchase
 -- Takes data from the one page checkout
 -- Adds an order record
 -- Updates the instrument as sold
---- Creates a new OrderDetail entry to link the Instrument to the Order
+-- Creates a new OrderDetail entry to link the Instrument to the Order
 -- Updates the Seller sales data
-
 DROP PROCEDURE IF EXISTS purchase_instrument;
 
 CREATE PROCEDURE purchase_instrument(
@@ -111,11 +111,6 @@ BEGIN
     SELECT v_OrderID as 'order_id';
 END;
 
-
-
-
-
-
 DROP PROCEDURE IF EXISTS get_instrument_by_id;
 
 # Get an instrument by its ID, including its attributes
@@ -200,24 +195,27 @@ BEGIN
         billing_address_country
     FROM reverb_user
     WHERE user_id = p_userID;
-END
+END;
 
 -- Delete before creating in case we are updating it
 DROP PROCEDURE IF EXISTS auth_user;
 
---SELECT the user by email/pass. Used on the login screen.
---Return nothing if not found
-
+-- SELECT the user by email/pass. Used on the login screen.
+-- Return nothing if not found
 CREATE PROCEDURE auth_user(
     IN inputEmail VARCHAR(255))
 BEGIN
 
-    SELECT user_id, password as 'user_password'
+    SELECT user_id, password as 'user_password', is_superuser
     FROM reverb_user
     WHERE email = inputEmail;
-END //
+END;
+
+
 
 DROP PROCEDURE IF EXISTS select_seller_profile;
+-- Get the seller's profile information
+-- Used to display the seller's profile page
 CREATE PROCEDURE select_seller_profile(IN seller_id INT)
 BEGIN
     SELECT store_name,
@@ -232,9 +230,9 @@ BEGIN
               user_id
     FROM reverb_seller
     WHERE seller_id = seller_id;
-END
+END;
 
---Insert a new Seller
+-- Insert a new Seller
 DROP PROCEDURE IF EXISTS create_seller;
 
 CREATE PROCEDURE create_seller(
@@ -286,7 +284,35 @@ BEGIN
     SELECT seller_id
     FROM reverb_seller
     WHERE user_id = user_id;
-END
+END;
 
 
 
+-- drop the procedure if it exists
+DROP PROCEDURE IF EXISTS get_instruments_by_category;
+-- Create a stored procedure to get all instruments by category
+-- The procedure takes a category_id as input and returns a result set with instrument details
+-- The procedure uses a temporary table to store the result set before returning it
+-- Showcases: temporary table
+CREATE PROCEDURE get_instruments_by_category(IN category_id INT)
+BEGIN
+    CREATE TEMPORARY TABLE IF NOT EXISTS ResultTable (
+        instrument_id INT,
+        instrument_name VARCHAR(255),
+        brand VARCHAR(255),
+        model VARCHAR(255),
+        description TEXT,
+        price DECIMAL(10,2),
+        image_url VARCHAR(255),
+        store_name VARCHAR(255)
+    );
+    INSERT INTO ResultTable
+    SELECT g.instrument_id, g.name AS instrument_name, g.brand, g.model, g.description,
+    g.price, g.image_url, rs.store_name
+    FROM reverb_instrument g
+    JOIN reverb_seller rs ON g.seller_id = rs.seller_id
+    WHERE g.category_id = category_id
+    AND g.status = 1; -- status = 1 means the instrument is available
+
+    SELECT * FROM ResultTable;
+END;

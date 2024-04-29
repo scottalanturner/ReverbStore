@@ -1,0 +1,26 @@
+<h2>Highest Price Products By Category</h2>
+
+{% include 'admin/template_sql_accordion.html' %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Model</th>
+            <th scope="col">Price</th>
+            <th scope="col">Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.brand }}</td>
+                <td>{{ item.model }}</td>
+                <td>${{ '%.2f'|format(item.price) }}</td>
+                <td>{{ item.category }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

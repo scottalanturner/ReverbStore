@@ -12,6 +12,7 @@ WITH Guitars AS (
     FROM reverb_instrument ri
     WHERE ri.category_id = 2
     AND ri.price BETWEEN 1000 AND 3000
+    AND ri.status = 1 -- available
 )
 SELECT g.instrument_id, g.name AS instrument_name, g.brand, g.model, g.description,
     g.price, g.image_url, rs.store_name
@@ -38,6 +39,7 @@ FROM reverb_instrument ri
 JOIN reverb_seller rs ON ri.seller_id = rs.seller_id
 WHERE ri.instrument_id = ANY (SELECT instrument_id FROM cool_color_guitars)
 AND ri.category_id = 2 -- Guitar
+AND ri.status = 1 -- available
 ;
 
 DROP VIEW IF EXISTS get_notdrum_instruments;
@@ -54,6 +56,7 @@ WHERE ri.instrument_id NOT IN (
     SELECT ri.instrument_id
     FROM reverb_instrument ri
     WHERE ri.category_id = 1 -- Drums
+    AND ri.status = 1 -- available
 );
 
 
@@ -71,7 +74,8 @@ WHERE ri.instrument_id IN (
     FROM reverb_instrument_attributes ia
     WHERE ia.attribute_key = 'Number of Frets'
     AND ia.attribute_value = '22'
-);
+)
+AND ri.status = 1 -- available;
 
 
 DROP VIEW IF EXISTS get_nonwhite_guitars;
@@ -84,10 +88,11 @@ SELECT ri.instrument_id, ri.name AS instrument_name, ri.brand, ri.model, ri.desc
 FROM reverb_instrument ri
 JOIN reverb_seller rs ON ri.seller_id = rs.seller_id
 WHERE ri.category_id = 2 -- Guitar
+AND ri.status = 1 -- available
 AND ri.instrument_id NOT IN (
     SELECT ia.instrument_id
     FROM reverb_instrument_attributes ia
-    WHERE ia.attribute_key = 'Finish'
+    WHERE ia.attribute_key IN ('Finish', 'Body Color')
     AND ia.attribute_value = 'White'
 );
 
@@ -99,7 +104,7 @@ DROP VIEW IF EXISTS get_sales_by_category;
 -- be sale items for the purpose of showing set functionality
 -- Returns: 12 records. 3 for each category
 -- Columns: instrument_id, instrument_name, brand, model, description, price, image_url, store_name
--- Showcases: SELECT, JOIN, WHERE, ORDER BY, LIMIT, UNION
+-- Showcases: Set operation, JOIN, WHERE, ORDER BY, LIMIT, UNION
 CREATE VIEW get_sales_by_category AS
 (
 SELECT ri.instrument_id, ri.name AS instrument_name, ri.brand, ri.model, ri.description,
@@ -149,7 +154,8 @@ LIMIT 3
 
 --Used on the home page to show the featured instruments. Ordering is by name.**/
 DROP VIEW IF EXISTS get_featured_instruments;
-
+-- Description: Get all featured instruments. Basic select/join based on the featured flag
+-- Showcases: JOIN, WHERE, ORDER BY
 CREATE VIEW get_featured_instruments AS
 SELECT
     ri.instrument_id,

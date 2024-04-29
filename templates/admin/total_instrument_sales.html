@@ -1,0 +1,24 @@
+<h2>90-Day Guitar Sales</h2>
+
+{% include 'admin/template_sql_accordion.html' %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Year-Month</th>
+            <th scope="col">Sales</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr class="{{ 'font-weight-bold' if row.category is none or row.brand is none else '' }}">
+            <td class="{{ 'bg-light' if row.category is none else '' }}">{{ row.category if row.category is not none else '' }}</td>
+            <td class="{{ 'bg-light' if row.brand is none else '' }}">{{ row.brand if row.brand is not none else '' }}</td>
+            <td class="{{ 'bg-light' if row.yearMonth is none else '' }}">{{ row.yearMonth if row.yearMonth is not none else '' }}</td>
+            <td class="{{ 'bg-light' if row.category is none or row.brand is none or row.yearMonth is none else '' }}" style="{{ 'font-weight: bold;' if row.category is none or row.brand is none or row.yearMonth is none else '' }}">{{ row.sales }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

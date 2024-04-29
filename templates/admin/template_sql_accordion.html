@@ -1,0 +1,21 @@
+<div class="accordion" id="productRankAccordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button style="background-color:#CCCCCC; color: white;" class="accordion-button collapsed btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                View SQL
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#productRankAccordion">
+            <div class="accordion-body bg-light">
+                <table class="table">
+                    <!-- ... rest of your table code ... -->
+                </table>
+                <div class="row">
+                    
+                    <div class="col-md-12"><pre>{{ sql }}</pre></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

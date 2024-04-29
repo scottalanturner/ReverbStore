@@ -1,0 +1,28 @@
+<h2>Category Sales Ranks</h2>
+
+{% include 'admin/template_sql_accordion.html' %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Category</th>
+      <th scope="col">Sales</th>
+      <th scope="col">Rank Sales</th>
+      <th scope="col">Dense Rank Sales</th>
+      <th scope="col">Percent Rank Sales</th>
+      <th scope="col">Cumulative Distribution Sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in data %}
+    <tr>
+      <td>{{ row.category }}</td>
+      <td>{{ row.sales }}</td>
+      <td>{{ row.rank_sales }}</td>
+      <td>{{ row.dense_rank_sales }}</td>
+      <td>{{ row.perc_rank_sales }}</td>
+      <td>{{ row.cum_dist_sales }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

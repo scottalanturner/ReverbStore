@@ -13,11 +13,23 @@ Welcome to Reverb Store!
     <div class="row">
         <div class="col-md-2"></div>
             <div class="col-md-8">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {% for message in messages %}
+                    {{ message }}
+                    {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endif %}
+                {% endwith %}
                 <div class="container">
                     <div class="row">
+                        <h2>Featured Instruments</h2>
                         {% for record in records %}
                             <div class="col-md-4 d-flex align-items-stretch">
                                 <div class="card mb-4">
+                                    
                                     <img class="card-img-top" src="{{ url_for('static', filename='images/' + record.image_url ) }}" alt="{{ record.instrument_name }}">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ record.instrument_name }}</h5>

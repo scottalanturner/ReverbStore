@@ -1,0 +1,22 @@
+<h2>Seller Rank</h2>
+
+{% include 'admin/template_sql_accordion.html' %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Store Name</th>
+            <th scope="col">Total Sales</th>
+            <th scope="col">Sales Rank</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+            <tr>
+                <td>{{ item.store_name }}</td>
+                <td>${{ '%.2f'|format(item.total_sales) }}</td>
+                <td>{{ item.sales_rank }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

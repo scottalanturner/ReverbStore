@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Home Page - Reverb Store
+{% endblock %}
+
+{% block header %}
+Admin Reports
+{% endblock %}
+
+
+{% block content %}
+<style>
+    .icon-blue {
+        color: #007bff;  /* Vivid Blue */
+    }
+    
+    .icon-light-blue {
+        color: #add8e6;  /* Light Blue */
+    }
+    
+    .icon-cyan {
+        color: #3b5998;  /* Cyan */
+    }
+    
+    .icon-teal {
+        color: #4285F4;  /* Teal */
+    }
+    
+    .icon-dark-cyan {
+        color: #0078D7;  /* Dark Cyan */
+    }
+    
+    .icon-navy-blue {
+        color: #1A2930;  /* Navy Blue */
+    }
+    .card {
+        margin: 20px;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        $(".report-link").click(function(e) {
+            e.preventDefault();  // Prevent the default action (page reload)
+    
+            var url = $(this).attr('href');  // Get the URL from the link's href attribute
+    
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(data) {
+                    // Update a part of the page with the returned data
+                    $('#report-container').html(data);
+                }
+            });
+        });
+    });
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-chart-bar fa-2x icon-blue"></i>
+                    <a href="/admin/total_sales_by_seller" class="report-link text-decoration-none">Total Sales By Seller</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-chart-pie fa-2x icon-light-blue"></i>
+                    <a href="/admin/seller_rank" class="report-link">Store Rank</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-money-bill-wave fa-2x icon-cyan"></i>
+                    <a href="/admin/product_rank" class="report-link text-decoration-none">Highest Price Products By Category</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-music fa-2x icon-teal"></i>
+                    <a href="/admin/total_instrument_sales" class="report-link text-decoration-none">90-Day Guitar Sales</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-flag-usa fa-2x icon-dark-cyan"></i>
+                    <a href="/admin/sales_by_us_state" class="report-link text-decoration-none">Sales by US State</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-chart-pie fa-2x icon-navy-blue"></i>
+                    <a href="/admin/category_sales_ranks" class="report-link text-decoration-none">Category Sales Ranks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" id="report-container"></div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+{% endblock %}

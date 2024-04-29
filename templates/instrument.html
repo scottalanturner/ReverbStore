@@ -14,7 +14,7 @@
             <p><strong>Sold by:</strong> {{ record.store_name }}</p>
             <p><strong>Shipping:</strong> {{ record.shipping_type }}</p>
             <p><strong>Price:</strong> ${{ record.price }}</p>
-            <a href="{{ url_for('checkout', instrument_id=record.instrument_id) }}">
+            <a href="{{ url_for('main.checkout', instrument_id=record.instrument_id) }}">
                 <button class="btn btn-primary btn-lg">Buy Now</button>
             </a>        
         </div>
