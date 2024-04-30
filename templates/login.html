@@ -8,35 +8,44 @@ Login
 
 <div class="container">
     <div class="row justify-content-center align-items-center">
-      <div class="col-md-4">
-
-    {% if form.errors %}
-    <div>{{ form.errors }}</div>
-    {% endif %}
-
-<form method="post">
-    {{ form.hidden_tag() }}
-    
-    {% for field in form %}
-        {% if field.name != 'csrf_token' %}
-            <div class="form-group row">
-            {{ field.label(class="col-form-label") }}
-            <div>
-                {{ field(class="form-control") }}
-                {% if field.errors %}
-                    <div class="invalid-feedback">
-                        {{ field.errors[0] }}
-                    </div>
-                {% endif %}
+        <div class="col-md-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {% endfor %}
             </div>
-        </div>
         {% endif %}
-    {% endfor %}
-    
-    <button type="submit" class="btn btn-primary">Login</button>
+        {% endwith %}
+        {% if form.errors %}
+        <div>{{ form.errors }}</div>
+        {% endif %}
 
-</form>
-</div
-</div>
+            <form method="post">
+                {{ form.hidden_tag() }}
+                
+                {% for field in form %}
+                    {% if field.name != 'csrf_token' %}
+                        <div class="form-group row">
+                        {{ field.label(class="col-form-label") }}
+                        <div>
+                            {{ field(class="form-control") }}
+                            {% if field.errors %}
+                                <div class="invalid-feedback">
+                                    {{ field.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                
+                <button type="submit" class="btn btn-primary">Login</button>
+
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

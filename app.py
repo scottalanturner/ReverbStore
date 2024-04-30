@@ -36,23 +36,6 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     
-    #app.run(debug=True)
-
-#app = Flask(__name__)
-#app.register_blueprint(admin)
-
-#app.config['SECRET_KEY'] = 'your-secret-key'  # Needed for CSRF protection
-
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'your_database_uri'
-#db = SQLAlchemy(app)
-
-# MySQL configurations
-#app.config['MYSQL_USER'] = 'scott'
-#app.config['MYSQL_PASSWORD'] = 'password'
-#app.config['MYSQL_DB'] = 'reverb'
-#app.config['MYSQL_HOST'] = 'localhost'
-#app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-#mysql = MySQL(app)
 
 SHIPPING_TYPES = {
     1: 'Free Shipping',
@@ -98,7 +81,7 @@ def instrument(instrument_id):
 
     except Error as e:
         print(e)
-        flash('An error occurred while fetching the instrument details. Please try again later.')
+        flash('An error occurred while fetching the instrument details. Please try again later.', 'danger')
         return redirect(url_for('main.home'))
 
     return render_template('instrument.html', record=instrument, attributes=instrument_attributes)
@@ -145,7 +128,11 @@ def checkout(instrument_id):
                 result_sets = cursor.stored_results()
 
                 # Get the first result set (instrument details)
-                user = next(result_sets).fetchone()              
+                user = next(result_sets).fetchone() 
+
+                if (user is None):
+                    flash('An application error occured. User not found. Please login again and retry your purchase', 'danger')
+                    return render_template('error.html')             
 
                 # Validate the form on POST
                 if request.method == 'POST':
@@ -203,8 +190,8 @@ def checkout(instrument_id):
                     return render_template('checkout.html', form=form, instrument=instrument)
     
     except InternalError as e:
-        flash('Error during processing order: {}'.format(str(e)))       
-        return render_template('checkout.html', instrument=instrument, user=user)
+        flash('Error during processing order: {}'.format(str(e)), 'danger')       
+        return render_template('error.html')
             
 
 # This route will display the home page
@@ -306,7 +293,7 @@ def login():
         result = cursor.fetchone()
 
         if not result:
-            flash('Invalid email or password.')
+            flash('Invalid email or password.', 'danger')
             return render_template('login.html', form=form)
 
         user_id = result['user_id']
